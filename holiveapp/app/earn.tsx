@@ -7,7 +7,7 @@ export default function EarnScreen() {
 
   const handleWhatsApp = () => {
     const phoneNumber = '2348034744435'; // replace with your admin WhatsApp number
-    const message = 'Hi! I’m interested in becoming a medical product partner.';
+    const message = 'Hi! I’m interested in free medical consultation.';
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     Linking.openURL(url);
   };
@@ -21,7 +21,7 @@ export default function EarnScreen() {
       </Text>
 
       <Text style={{ fontSize: 16, textAlign: 'center', color: '#555', marginBottom: 32 }}>
-        Send us a message to become a partner and promote medical products.
+        Start your free medical consultation as a user of Holive services.
       </Text>
 
       <TouchableOpacity
