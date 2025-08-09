@@ -6,7 +6,7 @@ export default function EarnScreen() {
   const router = useRouter();
 
   const handleWhatsApp = () => {
-    const phoneNumber = '2348034744435'; // replace with your admin WhatsApp number
+    const phoneNumber = '2348150770470'; // replace with your admin WhatsApp number
     const message = 'Hi! I’m interested in free medical consultation.';
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     Linking.openURL(url);

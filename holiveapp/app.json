@@ -12,9 +12,11 @@
       "supportsTablet": true
     },
     "android": {
+      
       "adaptiveIcon": {
         "foregroundImage": "./assets/logoh.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "icon": "./images/holive.png"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.mukadaz.holiveapp"
@@ -45,6 +47,12 @@
       "eas": {
         "projectId": "46a879e4-81a0-48a9-8e34-405707993447"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/46a879e4-81a0-48a9-8e34-405707993447"
     }
   }
 }
