@@ -1,6 +1,7 @@
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import { useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import React from 'react';
 
 const { width, height } = Dimensions.get('window');
 const LOGO_CONTAINER_SIZE = Math.min(width, height) * 0.3; // Responsive square size

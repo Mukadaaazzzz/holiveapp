@@ -7,9 +7,10 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
-import { ThemedView } from '@/components/ThemedView';
-import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { ThemedView } from '../components/ThemedView';
+import { useBottomTabOverflow } from '../components/ui/TabBarBackground';
+import { useColorScheme } from '../hooks/useColorScheme';
+import React from 'react';
 
 const HEADER_HEIGHT = 250;
 
@@ -41,7 +42,7 @@ export default function ParallaxScrollView({
           scale: interpolate(scrollOffset.value, [-HEADER_HEIGHT, 0, HEADER_HEIGHT], [2, 1, 1]),
         },
       ],
-    };
+    } as any;
   });
 
   return (

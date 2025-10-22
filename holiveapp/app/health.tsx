@@ -1,12 +1,13 @@
 import { View, Text, Linking, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
 
-export default function EarnScreen() {
+export default function HealthScreen() {
   const router = useRouter();
 
   const handleWhatsApp = () => {
-    const phoneNumber = '2348150770470'; // replace with your admin WhatsApp number
+    const phoneNumber = '2348150770470';
     const message = 'Hi! I’m interested in free medical consultation.';
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     Linking.openURL(url);
@@ -21,7 +22,7 @@ export default function EarnScreen() {
       </Text>
 
       <Text style={{ fontSize: 16, textAlign: 'center', color: '#555', marginBottom: 32 }}>
-        Start your free medical consultation as a user of Holive services.
+        Start your free medical consultation as a regular user of Holive services.
       </Text>
 
       <TouchableOpacity

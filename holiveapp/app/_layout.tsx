@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import * as Linking from 'expo-linking';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
+import React from 'react';
 
 function ProtectedRoutes({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading } = useAuth();
@@ -64,9 +65,10 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ProtectedRoutes>
-         <Stack initialRouteName="welcome" >
+         <Stack>
           <Stack.Screen name="welcome" options={{ headerShown: false }} />
           <Stack.Screen name="signin" options={{ headerShown: false }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="signup" options={{ headerShown: false }} />
           <Stack.Screen name="fund-wallet" options={{ headerShown: false }} />
           <Stack.Screen name="transactions" options={{ headerShown: true }} />
@@ -74,7 +76,7 @@ export default function RootLayout() {
           <Stack.Screen name="data" options={{ headerShown: true }} />
           <Stack.Screen name="cable" options={{ headerShown: true }} />
           <Stack.Screen name="electricity" options={{ headerShown: true }} />
-          <Stack.Screen name="earn" options={{ headerShown: true }} />
+          <Stack.Screen name="health" options={{ headerShown: true }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
         <StatusBar style="auto" />

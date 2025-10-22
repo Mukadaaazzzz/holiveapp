@@ -6,7 +6,7 @@ import {
 import { useRouter } from 'expo-router';
 import { supabaseGateway } from '../lib/api';
 import * as SecureStore from 'expo-secure-store';
-import { ChevronLeft, CreditCard } from 'lucide-react-native';
+import { ChevronLeft, CreditCard, Info } from 'lucide-react-native';
 import { WebView } from 'react-native-webview';
 import * as Linking from 'expo-linking';
 
@@ -265,6 +265,17 @@ export default function FundWalletScreen() {
         <Text style={styles.balanceAmount}>₦{balance.toLocaleString()}</Text>
       </View>
 
+      {/* Transfer Recommendation Banner */}
+      <View style={styles.recommendationBanner}>
+        <Info size={20} color="#2563EB" />
+        <View style={styles.bannerTextContainer}>
+          <Text style={styles.bannerTitle}>Save on Fees!</Text>
+          <Text style={styles.bannerSubtitle}>
+            Bank transfer has lower fees than card payments
+          </Text>
+        </View>
+      </View>
+
       <View style={styles.formContainer}>
         <Text style={styles.inputLabel}>Amount to Fund (₦)</Text>
         <TextInput
@@ -351,6 +362,31 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '600',
     color: '#111827',
+  },
+  recommendationBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#DBEAFE',
+    marginHorizontal: 20,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#93C5FD',
+  },
+  bannerTextContainer: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  bannerTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1E40AF',
+    marginBottom: 2,
+  },
+  bannerSubtitle: {
+    fontSize: 12,
+    color: '#374151',
   },
   formContainer: {
     paddingHorizontal: 20,

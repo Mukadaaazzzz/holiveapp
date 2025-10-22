@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
-
+import React from 'react';
 type AuthContextType = {
   isAuthenticated: boolean;
   loading: boolean;

@@ -149,7 +149,7 @@ fetchUserData();
     | '/data'
     | '/cable'
     | '/electricity'
-    | '/earn'
+    | '/health'
     | '/fund-wallet';
 
   const services = [
@@ -178,9 +178,9 @@ fetchUserData();
       bgColor: '#F3F4F6'
     },
     { 
-      name: 'Earn', 
-      route: '/earn', 
-      icon: require('../../assets/icons/earn.png'),
+      name: 'Health+', 
+      route: '/health', 
+      icon: require('../../assets/icons/health.png'),
       bgColor: '#F3F4F6'
     },
     { 

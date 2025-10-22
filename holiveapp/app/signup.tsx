@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { supabaseGateway } from '../lib/api';
+import React from 'react';
 
 export default function SignUpScreen() {
   const [form, setForm] = useState({
@@ -115,6 +116,7 @@ export default function SignUpScreen() {
         <TextInput
           style={[styles.input, errors.password && styles.inputError]}
           placeholder="Password (min 6 characters)"
+          placeholderTextColor="#999"
           value={form.password}
           onChangeText={(text) => handleChange('password', text)}
           secureTextEntry
@@ -127,6 +129,7 @@ export default function SignUpScreen() {
         <TextInput
           style={[styles.input, errors.confirmPassword && styles.inputError]}
           placeholder="Confirm Password"
+          placeholderTextColor="#999"
           value={form.confirmPassword}
           onChangeText={(text) => handleChange('confirmPassword', text)}
           secureTextEntry
@@ -185,6 +188,7 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 16,
     backgroundColor: '#f9f9f9',
+     color: '#000',
   },
   inputError: {
     borderColor: '#FF3B30',

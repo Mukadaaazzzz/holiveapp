@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "holiveapp",
+    "name": "Holiveapp",
     "slug": "holiveapp",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/holive.png",
     "scheme": "holiveapp",
@@ -14,9 +14,9 @@
     "android": {
       
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logoh.png",
+        "foregroundImage": "./assets/images/holive.png",
         "backgroundColor": "#ffffff",
-        "icon": "./images/holive.png"
+        "icon": "./assets/images/holive.png"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.mukadaz.holiveapp"
@@ -31,7 +31,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/logoh.png",
+          "image": "./assets/images/holive.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

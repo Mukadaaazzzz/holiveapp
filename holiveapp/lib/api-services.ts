@@ -14,17 +14,7 @@ interface ServiceResponse {
   [key: string]: any;
 }
 
-// Helper function to get userId from stored data
-const getUserId = async (): Promise<string | null> => {
-  try {
-    const userId = await SecureStore.getItemAsync('userId');
-    return userId;
-  } catch (error) {
-    console.error('Error getting userId:', error);
-    return null;
-  }
-};
-
+// Unified service request function for all transactions
 export const serviceRequest = async (
   service: string,
   payload: any
@@ -35,21 +25,14 @@ export const serviceRequest = async (
       return { error: 'Not authenticated' };
     }
 
-    // Get userId from secure store
-    const userId = await getUserId();
-    if (!userId) {
-      return { error: 'User ID not found' };
-    }
-
     const response = await fetch(`${API_BASE}/api/services-gateway`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
         service,
-        userId, // Add userId here
+        access_token: accessToken, // Send JWT token for authentication
         ...payload
       })
     });
@@ -57,7 +40,103 @@ export const serviceRequest = async (
     const data = await response.json();
     return response.ok ? data : { error: data.error || 'Request failed' };
   } catch (error) {
+    console.error('Service request error:', error);
     return { error: 'Network error' };
+  }
+};
+
+// PIN Service - uses the same authentication method
+export const pinService = {
+  // Check if user has PIN
+  hasPin: async (): Promise<{ success: boolean; hasPin: boolean }> => {
+    try {
+      const accessToken = await SecureStore.getItemAsync('access_token');
+      if (!accessToken) {
+        return { success: false, hasPin: false };
+      }
+
+      const response = await fetch(`${API_BASE}/api/pin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          action: 'hasPin',
+          access_token: accessToken
+        })
+      });
+      
+      if (!response.ok) {
+        return { success: false, hasPin: false };
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('PIN check error:', error);
+      return { success: false, hasPin: false };
+    }
+  },
+
+  // Verify PIN
+  verify: async (pin: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const accessToken = await SecureStore.getItemAsync('access_token');
+      if (!accessToken) {
+        return { success: false, message: 'Not authenticated' };
+      }
+
+      const response = await fetch(`${API_BASE}/api/pin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          action: 'verify', 
+          pin,
+          access_token: accessToken
+        })
+      });
+      
+      if (!response.ok) {
+        return { success: false, message: 'Verification failed' };
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('PIN verify error:', error);
+      return { success: false, message: 'Network error' };
+    }
+  },
+
+  // Create or update PIN
+  createOrUpdate: async (pin: string): Promise<{ success: boolean; message: string }> => {
+    try {
+      const accessToken = await SecureStore.getItemAsync('access_token');
+      if (!accessToken) {
+        return { success: false, message: 'Not authenticated' };
+      }
+
+      const response = await fetch(`${API_BASE}/api/pin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          action: 'createOrUpdate', 
+          pin,
+          access_token: accessToken
+        })
+      });
+      
+      if (!response.ok) {
+        return { success: false, message: 'Failed to save PIN' };
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('PIN create error:', error);
+      return { success: false, message: 'Network error' };
+    }
   }
 };
 
@@ -66,38 +145,38 @@ export const purchaseAirtime = (data: {
   network: string;
   mobile_number: string;
   amount: number;
-}) => serviceRequest('airtime', data);
+}): Promise<ServiceResponse> => serviceRequest('airtime', data);
 
 export const purchaseData = (data: {
   network: string;
   mobile_number: string;
   plan: string;
   amount: number;
-}) => serviceRequest('data', data);
+}): Promise<ServiceResponse> => serviceRequest('data', data);
 
 export const verifyElectricity = (data: {
   disco_name: string;
   meter_number: string;
-}) => serviceRequest('electricity', { action: 'verify', ...data });
+}): Promise<ServiceResponse> => serviceRequest('electricity', { action: 'verify', ...data });
 
 export const payElectricity = (data: {
   disco_name: string;
   meter_number: string;
   MeterType: string;
   amount: number;
-}) => serviceRequest('electricity', data);
+}): Promise<ServiceResponse> => serviceRequest('electricity', data);
 
 export const verifyCable = (data: {
   cablename: string;
   smart_card_number: string;
-}) => serviceRequest('tv', { action: 'verify', ...data });
+}): Promise<ServiceResponse> => serviceRequest('tv', { action: 'verify', ...data });
 
 export const purchaseCable = (data: {
   cablename: string;
   smart_card_number: string;
   cableplan: string;
   amount: number;
-}) => serviceRequest('tv', data);
+}): Promise<ServiceResponse> => serviceRequest('tv', data);
 
 // Network options
 export const NETWORK_OPTIONS = [
@@ -131,7 +210,7 @@ export const CABLE_PROVIDERS = [
   { id: "4", name: "SHOWMAX" },
 ];
 
-// Data plans - copied from your Next.js code
+// Data plans
 export const DATA_PLANS = {
   "1": [ // MTN
     { id: "1", name: "500 MB", type: "SME2", validity: "1 Day", price: "₦390.00" },
@@ -140,7 +219,6 @@ export const DATA_PLANS = {
     { id: "4", name: "2.7GB", type: "SME", validity: "30 Days", price: "₦2000.00" },
     { id: "5", name: "6GB", type: "SME", validity: "7 Days", price: "₦2500.00" },
     { id: "6", name: "10GB", type: "SME", validity: "30 Days", price: "₦4500.50" },
-
   ],
   "2": [ // GLO
     { id: "20", name: "750 MB", type: "Corporate", validity: "1 Day", price: "₦195.00" },
@@ -152,7 +230,6 @@ export const DATA_PLANS = {
     { id: "25", name: "3 GB", type: "Corporate", validity: "30 Days", price: "₦1290.00" },
     { id: "26", name: "5 GB", type: "Corporate", validity: "30 Days", price: "₦2150.00" },
     { id: "27", name: "10 GB", type: "Corporate", validity: "30 Days", price: "₦4300.00" },
-    
   ],
   "3": [ // 9MOBILE
     { id: "34", name: "500 MB", type: "Corporate", validity: "30 Days", price: "₦71.00" },
@@ -163,7 +240,6 @@ export const DATA_PLANS = {
     { id: "68", name: "4GB", type: "Corporate", validity: "30 Days", price: "₦520.00" },
     { id: "69", name: "20GB", type: "Corporate", validity: "30 Days", price: "₦2600.00" },
     { id: "80", name: "1.5GB", type: "Corporate", validity: "30 Days", price: "₦197.00" },
-
   ],
   "4": [ // AIRTEL
     { id: "28", name: "500 MB", type: "Corporate", validity: "7 Days", price: "₦495.00" },
@@ -185,7 +261,6 @@ export const CABLE_PLANS = {
     { id: "3", name: "Jolli", price: "₦5800.00" },
     { id: "4", name: "Max", price: "₦8150.00" },
     { id: "5", name: "Supa", price: "₦11400.00" },
-    
   ],
   "2": [ // DSTV
     { id: "6", name: "Padi", price: "₦44000.00" },
